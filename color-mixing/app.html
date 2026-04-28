@@ -189,11 +189,6 @@
     </style>
 </head>
 <body>
-
-    <!--div class="controls">
-        <button id="clear-btn">Clear</button>
-    </div-->
-
     <div class="main-container">
         <div id="result-square">
             <span id="square-text">No colours added</span>
@@ -237,8 +232,6 @@
         const resultSquare = document.getElementById('result-square');
         const squareText = document.getElementById('square-text');
         const squareOverlay = document.getElementById('square-overlay');
-        const infoListElement = document.getElementById('info-list');
-        const infoPanel = document.getElementById('info-panel');
         const clearBtn = document.getElementById('clear-btn');
         const rainbowRow = document.getElementById('row-rainbow');
         const extraRow = document.getElementById('row-extra');
@@ -273,14 +266,20 @@
 
             const keys = Object.keys(addedColors);
 
+            // First, reset all counts and hide them
+            document.querySelectorAll('.color-circle').forEach(circle => {
+                const countSpan = circle.querySelector('.count');
+                if (countSpan) {
+                    countSpan.textContent = '0';
+                    countSpan.style.display = 'none';
+                }
+            });
+
             if (keys.length === 0) {
                 squareText.textContent = "No colours added";
                 squareText.style.color = "black";
                 resultSquare.style.backgroundColor = "#fff";
                 squareOverlay.innerHTML = "";
-                infoListElement.innerHTML = '';
-                infoPanel.style.display = 'none';
-                document.querySelectorAll('.count').forEach(span => span.style.display = 'none');
                 return;
             }
 
@@ -306,8 +305,7 @@
             //squareText.style.color = textColor;
             squareOverlay.innerHTML = "";
 
-            // For the new simplified version, we don't use the info panel,
-            // but we'll keep the logic for updating the counts on the buttons.
+            // Now update the counts for the added colors
             document.querySelectorAll('.color-circle').forEach(circle => {
                 const hex = circle.dataset.hex;
                 const countSpan = circle.querySelector('.count');
@@ -316,8 +314,6 @@
                 if (count > 0) {
                     countSpan.textContent = count;
                     countSpan.style.display = 'block';
-                } else {
-                    countSpan.style.display = 'none';
                 }
             });
         }
